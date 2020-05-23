@@ -1,0 +1,27 @@
+{
+  "name": "Brain Cache",
+  "version": "1.0",
+  "description": "Search for your browser history by any keywords in articles, not limited to article title.",
+  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/brain_cache16.png",
+      "32": "images/brain_cache32.png",
+      "48": "images/brain_cache48.png",
+      "128": "images/brain_cache128.png"
+    }
+  },
+  "icons": {
+    "16": "images/brain_cache16.png",
+    "32": "images/brain_cache32.png",
+    "48": "images/brain_cache48.png",
+    "128": "images/brain_cache128.png"
+  },
+  "manifest_version": 2
+}
