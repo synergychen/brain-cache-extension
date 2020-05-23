@@ -1,6 +1,7 @@
 'use strict';
 
-let savePage = document.getElementById('savePage');
+let savePage = document.getElementById('save-page');
+let searchInput = document.getElementById('search-input');
 let search = document.getElementById('search');
 let serverUrl;
 
@@ -45,7 +46,7 @@ search.onclick = function() {
       code: `
         (() => {
           const searchUrl = '${serverUrl}/search';
-          const payload = { query: 'skip' };
+          const payload = { query: '${searchInput.value}' };
           let xhr = new XMLHttpRequest();
           xhr.open('POST', searchUrl, true);
           xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
