@@ -14,7 +14,7 @@ savePage.onclick = function() {
     chrome.tabs.executeScript(tabs[0].id, {
       code: `
         (() => {
-          const title = 'Full text search';
+          const title = document.querySelector('title').innerText;
           const createPageUrl = '${serverUrl}/pages'
           const content = document.querySelector('body').innerText;
           const visitedAt = new Date().toString();
