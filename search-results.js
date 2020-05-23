@@ -40,6 +40,7 @@ chrome.storage.sync.get('serverUrl', (data) => {
         const titleEl = document.createElement('a');
         titleEl.textContent = result.title;
         titleEl.setAttribute('class', 'search-result-title');
+        titleEl.setAttribute('target', '_blank');
         titleEl.setAttribute('href', result.url);
         container.append(titleEl);
       });
