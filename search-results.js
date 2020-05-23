@@ -1,7 +1,7 @@
-const search = (serverUrl, query) => {
+const search = ({ serverUrl, query, limit }) => {
   return new Promise((resolve, reject) => {
     const searchUrl = `${serverUrl}/search`;
-    const payload = { query: query };
+    const payload = { query, limit };
     let xhr = new XMLHttpRequest();
     xhr.open('POST', searchUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -19,14 +19,17 @@ chrome.storage.sync.get('serverUrl', (data) => {
   const serverUrl = data.serverUrl || '';
   const queryInput = document.querySelector('form[action="/search"] input[type="text"]');
   const query = queryInput.value.split(/[+ ]/).filter(e => !!e).join('|');
-  search(serverUrl, query)
+  const limit = 30;
+  search({ serverUrl, query, limit })
     .then((response) => {
+      const results = response[0];
+      if (results.length === 0) return
+
       // Results container
       const container = document.createElement('div');
       container.setAttribute('id', 'search-results-container');
       resultsContainer.prepend(container);
       // Each result
-      const results = response[0];
       results.forEach(result => {
         // Result: url
         const urlEl = document.createElement('div');
