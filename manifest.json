@@ -13,7 +13,8 @@
       "matches": [
         "https://www.google.com/search*"
       ],
-      "js": ["append-search-results.js"]
+      "js": ["search-results.js"],
+      "css": ["search-results.css"]
     }
   ],
   "page_action": {
