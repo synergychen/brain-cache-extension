@@ -11,10 +11,18 @@
   "content_scripts": [
     {
       "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
+      "js": ["javascripts/status-checker.js"],
+      "css": ["stylesheets/status-checker.css"]
+    },
+    {
+      "matches": [
         "https://www.google.com/search*"
       ],
-      "js": ["search-results.js"],
-      "css": ["search-results.css"]
+      "js": ["javascripts/search-results.js"],
+      "css": ["stylesheets/search-results.css"]
     }
   ],
   "page_action": {

@@ -1,0 +1,22 @@
+#brain-cache-star-wrapper {
+  position: fixed;
+  right: 30px;
+  bottom: 25px;
+}
+
+.brain-cache-star-hollow, .brain-cache-star-solid {
+  font-size: 30px;
+  color: #ffc107;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.brain-cache-star-hollow:before {
+  /* Hollow */
+  content: "\2606";
+}
+
+.brain-cache-star-solid:before {
+  /* Solid */
+  content: "\2605";
+}
