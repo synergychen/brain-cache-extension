@@ -1,6 +1,6 @@
 {
   "name": "Brain Cache",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Search for your browser history by any keywords in articles, not limited to article title.",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
