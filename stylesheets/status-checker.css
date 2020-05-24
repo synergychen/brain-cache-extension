@@ -2,6 +2,7 @@
   position: fixed;
   right: 30px;
   bottom: 25px;
+  z-index: 100000;
 }
 
 .brain-cache-star-hollow, .brain-cache-star-solid {

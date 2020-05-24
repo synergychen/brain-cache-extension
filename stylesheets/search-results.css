@@ -4,7 +4,7 @@
   border: 1px solid #dfe1e5;
   border-radius: 8px;
   box-shadow: none;
-  height: 465px;
+  max-height: 465px;
   overflow: scroll;
   padding: 15px;
   margin-top: 5px;
