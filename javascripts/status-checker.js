@@ -65,8 +65,9 @@ const unstar = () => {
 
 const title = document.querySelector('title').innerText
 findPage({ title })
-  .then((response) => {
-    const isSolid = !!response
+  .then((page) => {
+    // Add star/unstar button
+    const isSolid = !!page
     const hollowClass = 'brain-cache-star-hollow'
     const solidClass = 'brain-cache-star-solid'
     const starEl = document.createElement('span')
@@ -89,4 +90,8 @@ findPage({ title })
     el.setAttribute('id', 'brain-cache-star-wrapper')
     el.append(starEl)
     document.querySelector('body').append(el)
+    // Highlight texts
+    if (page) {
+      highlightTexts(page.metadata.highlights)
+    }
   })

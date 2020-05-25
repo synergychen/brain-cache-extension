@@ -1,3 +1,6 @@
+/**
+ * Brain Cache Cookie API
+ */
 class BrainCacheCookie {
   static get cacheKey() {
     return 'BRAIN_CACHE_PAGES'
