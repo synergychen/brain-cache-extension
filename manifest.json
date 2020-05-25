@@ -19,21 +19,21 @@
         "http://*/*"
       ],
       "js": [
-        "javascripts/helpers.js",
+        "javascripts/brain-cache-storage.js",
         "javascripts/highlight.js",
-        "javascripts/status-checker.js"
+        "javascripts/page.js"
       ],
       "css": [
         "stylesheets/highlight.css",
-        "stylesheets/status-checker.css"
+        "stylesheets/page.css"
       ]
     },
     {
       "matches": [
         "https://www.google.com/search*"
       ],
-      "js": ["javascripts/search-results.js"],
-      "css": ["stylesheets/search-results.css"]
+      "js": ["javascripts/search.js"],
+      "css": ["stylesheets/search.css"]
     }
   ],
   "page_action": {

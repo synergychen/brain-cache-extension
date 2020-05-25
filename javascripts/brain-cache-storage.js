@@ -1,19 +1,19 @@
 /**
  * Brain Cache Cookie API
  */
-class BrainCacheCookie {
+class BrainCacheStorage {
   static get cacheKey() {
     return 'BRAIN_CACHE_PAGES'
   }
 }
 
-BrainCacheCookie.getCookie = (name) => {
+BrainCacheStorage.getCookie = (name) => {
   let result = document.cookie.match(new RegExp(name + '=([^;]+)'))
   result && (result = JSON.parse(result[1]))
   return result
 }
 
-BrainCacheCookie.setCookie = (name, value) => {
+BrainCacheStorage.setCookie = (name, value) => {
   let now = new Date()
   let time = now.getTime()
   // Expire in one day
@@ -23,14 +23,14 @@ BrainCacheCookie.setCookie = (name, value) => {
   document.cookie = cookie
 }
 
-BrainCacheCookie.add = (page) => {
-  let pages = BrainCacheCookie.getCookie(BrainCacheCookie.cacheKey) || []
+BrainCacheStorage.add = (page) => {
+  let pages = BrainCacheStorage.getCookie(BrainCacheStorage.cacheKey) || []
   pages = pages.filter(page => page.title !== title)
   pages.push({ id: page.id, title: page.title })
-  BrainCacheCookie.setCookie(BrainCacheCookie.cacheKey, pages)
+  BrainCacheStorage.setCookie(BrainCacheStorage.cacheKey, pages)
 }
 
-BrainCacheCookie.getPageByTitle = (title) => {
-  let pages = BrainCacheCookie.getCookie(BrainCacheCookie.cacheKey) || []
+BrainCacheStorage.getPageByTitle = (title) => {
+  let pages = BrainCacheStorage.getCookie(BrainCacheStorage.cacheKey) || []
   return pages.find(page => page.title === title)
 }

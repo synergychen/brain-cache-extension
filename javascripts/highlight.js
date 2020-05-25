@@ -5,7 +5,7 @@ const textSelected = () => {
 const addHighlight = ({ title, text }) => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get('serverUrl', (data) => {
-      const id = BrainCacheCookie.getPageByTitle(title).id
+      const id = BrainCacheStorage.getPageByTitle(title).id
       const highlightUrl = `${data.serverUrl}/pages/${id}/highlight`
       const payload = { text }
       let xhr = new XMLHttpRequest()
@@ -32,7 +32,7 @@ const resetHighlights = () => {
 const removeHighlight = ({ title, text }) => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get('serverUrl', (data) => {
-      const id = BrainCacheCookie.getPageByTitle(title).id
+      const id = BrainCacheStorage.getPageByTitle(title).id
       const unhighlightUrl = `${data.serverUrl}/pages/${id}/unhighlight`
       const payload = { text }
       let xhr = new XMLHttpRequest()

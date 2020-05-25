@@ -9,7 +9,7 @@ const findPage = ({ title }) => {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
           const page = JSON.parse(this.responseText)
           if (!!page) {
-            BrainCacheCookie.add(page)
+            BrainCacheStorage.add(page)
           }
           return resolve(page)
         }
