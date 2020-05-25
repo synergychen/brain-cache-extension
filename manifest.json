@@ -2,7 +2,11 @@
   "name": "Brain Cache",
   "version": "1.0.0",
   "description": "Search for your browser history by any keywords in articles, not limited to article title.",
-  "permissions": ["declarativeContent", "storage"],
+  "permissions": [
+    "cookies",
+    "declarativeContent",
+    "storage"
+  ],
   "options_page": "options.html",
   "background": {
     "scripts": ["background.js"],
@@ -14,8 +18,15 @@
         "https://*/*",
         "http://*/*"
       ],
-      "js": ["javascripts/status-checker.js"],
-      "css": ["stylesheets/status-checker.css"]
+      "js": [
+        "javascripts/helpers.js",
+        "javascripts/highlight.js",
+        "javascripts/status-checker.js"
+      ],
+      "css": [
+        "stylesheets/highlight.css",
+        "stylesheets/status-checker.css"
+      ]
     },
     {
       "matches": [
