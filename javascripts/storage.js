@@ -23,7 +23,7 @@ Storage.setCookie = (name, value) => {
   document.cookie = cookie
 }
 
-Storage.add = (page) => {
+Storage.update = (page) => {
   let pages = Storage.getCookie(Storage.cacheKey) || []
   pages = pages.filter(pg => pg.title !== page.title)
   pages.push({ id: page.id, title: page.title })
@@ -32,8 +32,13 @@ Storage.add = (page) => {
 
 Storage.remove = (page) => {
   let pages = Storage.getCookie(Storage.cacheKey) || []
-  pages = pages.filter(pg => pg.title !== page.title)
+  pages = pages.filter(pg => pg.id !== page.id)
   Storage.setCookie(Storage.cacheKey, pages)
+}
+
+Storage.get = (id) => {
+  let pages = Storage.getCookie(Storage.cacheKey) || []
+  return pages.find(page => page.id === id)
 }
 
 Storage.getPageByTitle = (title) => {
