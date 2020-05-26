@@ -3,7 +3,7 @@ class Page {
     this._serverUrl = serverUrl
     this._data = null
     this._highlights = []
-    this._highlighter = new Highlighter({ serverUrl })
+    this._highlighter = new Highlighter({ serverUrl, page: this })
   }
 
   get data() { return this._data }
@@ -110,8 +110,9 @@ class Page {
 }
 
 class Highlighter {
-  constructor({ serverUrl }) {
+  constructor({ serverUrl, page }) {
     this._serverUrl = serverUrl
+    this._page = page
   }
 
   get textSelected() { return document.getSelection().toString() }
@@ -121,6 +122,8 @@ class Highlighter {
     const parentEl = selection.startContainer.parentElement
     return parentEl.classList.contains('brain-cache-highlighted') && parentEl.innerText.includes(selection.toString())
   }
+
+  get page() { return this._page }
 
   add({ title, text }) {
     return new Promise((resolve, reject) => {
