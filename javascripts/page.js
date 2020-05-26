@@ -55,6 +55,7 @@ class Page {
       xhr.onreadystatechange = function() {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
           const page = JSON.parse(this.responseText)
+          this._data = page
           Storage.add(page)
           return resolve(page)
         }
@@ -206,17 +207,24 @@ chrome.storage.sync.get(['serverUrl', 'pages'], (data) => {
         // Remove highlight
         page.highlighter.reset()
         page.highlighter.remove({ title, text }).then(pg => {
-          page.highlighter.render(pg.metadata.highlights)
+          page.data = pg
+          page.highlighter.render(page.highlights)
         })
       } else {
         // Add highlight
-        debugger
         if (Storage.getPageByTitle(title)) {
           page.highlighter.add({ title, text }).then(pg => {
-            page.highlighter.render(pg.metadata.highlights)
+            page.data = pg
+            page.highlighter.render(page.highlights)
           })
         } else {
-          console.log('haha')
+          page.star()
+            .then(pg => {
+              page.highlighter.add({ title, text }).then(pg => {
+                page.data = pg
+                page.highlighter.render(page.highlights)
+              })
+            })
         }
       }
     }
