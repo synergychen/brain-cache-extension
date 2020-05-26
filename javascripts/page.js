@@ -54,7 +54,9 @@ class Page {
       xhr.setRequestHeader('Content-Type', 'application/jsoncharset=UTF-8')
       xhr.onreadystatechange = function() {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-          return resolve(JSON.parse(this.responseText))
+          const page = JSON.parse(this.responseText)
+          Storage.add(page)
+          return resolve(page)
         }
       }
       xhr.send(JSON.stringify(payload))
@@ -69,7 +71,9 @@ class Page {
       xhr.open('DELETE', unstarUrl, true)
       xhr.onreadystatechange = function() {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-          return resolve(JSON.parse(this.responseText))
+          const page = JSON.parse(this.responseText)
+          Storage.remove({ title })
+          return resolve(page)
         }
       }
       xhr.send(null)
@@ -206,9 +210,14 @@ chrome.storage.sync.get(['serverUrl', 'pages'], (data) => {
         })
       } else {
         // Add highlight
-        page.highlighter.add({ title, text }).then(pg => {
-          page.highlighter.render(pg.metadata.highlights)
-        })
+        debugger
+        if (Storage.getPageByTitle(title)) {
+          page.highlighter.add({ title, text }).then(pg => {
+            page.highlighter.render(pg.metadata.highlights)
+          })
+        } else {
+          console.log('haha')
+        }
       }
     }
   })

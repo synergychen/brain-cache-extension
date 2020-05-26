@@ -30,6 +30,12 @@ Storage.add = (page) => {
   Storage.setCookie(Storage.cacheKey, pages)
 }
 
+Storage.remove = (page) => {
+  let pages = Storage.getCookie(Storage.cacheKey) || []
+  pages = pages.filter(pg => pg.title !== page.title)
+  Storage.setCookie(Storage.cacheKey, pages)
+}
+
 Storage.getPageByTitle = (title) => {
   let pages = Storage.getCookie(Storage.cacheKey) || []
   return pages.find(page => page.title === title)
