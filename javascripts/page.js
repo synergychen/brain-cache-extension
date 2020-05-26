@@ -17,9 +17,9 @@ class Page {
 
   get highlighter() { return this._highlighter }
 
-  findByTitle(title) {
+  findBy({ url }) {
     return new Promise((resolve, reject) => {
-      const searchUrl = `${this._serverUrl}/pages/search?title=${title}`
+      const searchUrl = `${this._serverUrl}/pages/search?url=${url}`
       let xhr = new XMLHttpRequest()
       xhr.open('GET', searchUrl)
       xhr.setRequestHeader('Content-Type', 'application/jsoncharset=UTF-8')
@@ -188,11 +188,12 @@ class Highlighter {
 }
 
 chrome.storage.sync.get(['serverUrl', 'pages'], (data) => {
+  const url = document.location.href
   const title = document.querySelector('title').innerText
   const page = new Page({ serverUrl: data.serverUrl })
 
   // Find page and append star
-  page.findByTitle(title)
+  page.findBy({ url })
     .then((pageData) => {
       page.data = pageData
       page.appendStar()
