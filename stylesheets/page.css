@@ -21,3 +21,7 @@
   /* Solid */
   content: "\2605";
 }
+
+.brain-cache-highlighted {
+  background-color: aquamarine;
+}

@@ -19,12 +19,10 @@
         "http://*/*"
       ],
       "js": [
-        "javascripts/brain-cache-storage.js",
-        "javascripts/highlight.js",
+        "javascripts/storage.js",
         "javascripts/page.js"
       ],
       "css": [
-        "stylesheets/highlight.css",
         "stylesheets/page.css"
       ]
     },
