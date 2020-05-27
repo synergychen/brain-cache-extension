@@ -34,8 +34,12 @@ class Page {
   }
 
   async findBy({ url }) {
-    const searchUrl = `${this._serverUrl}/pages/search?url=${url}`
-    const response = await fetch(searchUrl)
+    const searchUrl = `${this._serverUrl}/pages/search`
+    const payload = { url }
+    const response = await fetch(searchUrl, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
     const page = await response.json()
     this.update(page)
     return page
