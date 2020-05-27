@@ -8,20 +8,15 @@ class Search {
 
   set results(res) { this._results = res }
 
-  run({ query, limit }) {
-    return new Promise((resolve, reject) => {
-      const searchUrl = `${this._serverUrl}/search`
-      const payload = { query, limit }
-      let xhr = new XMLHttpRequest()
-      xhr.open('POST', searchUrl, true)
-      xhr.setRequestHeader('Content-Type', 'application/jsoncharset=UTF-8')
-      xhr.onreadystatechange = function() {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-          return resolve(JSON.parse(this.responseText))
-        }
-      }
-      xhr.send(JSON.stringify(payload))
+  async run({ query, limit }) {
+    const searchUrl = `${this._serverUrl}/search`
+    const payload = { query, limit }
+    const response = await fetch(searchUrl, {
+      method: 'POST',
+      body: JSON.stringify(payload),
     })
+    const page = await response.json()
+    return page
   }
 
   appendResults() {
@@ -48,17 +43,15 @@ class Search {
   }
 }
 
-chrome.storage.sync.get('serverUrl', (data) => {
+chrome.storage.sync.get('serverUrl', async (data) => {
   const serverUrl = data.serverUrl || ''
   const queryInput = document.querySelector('form[action="/search"] input[type="text"]')
-  const query = queryInput.value.split(/[+ ]/).filter(e => !!e).join('|')
+  const query = queryInput.value.split(/[+ ]/).filter(e => !!e).join('&')
   const limit = 30
   const search = new Search({ serverUrl })
-  search.run({ query, limit })
-    .then((response) => {
-      const results = response[0]
-      if (results.length === 0) return
-      search.results = results
-      search.appendResults()
-    })
+  const response = await search.run({ query, limit })
+  const results = response[0]
+  if (results.length === 0) return
+  search.results = results
+  search.appendResults()
 })

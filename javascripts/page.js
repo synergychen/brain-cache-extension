@@ -191,14 +191,6 @@ class Highlighter {
   }
 }
 
-function status(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return Promise.resolve(response)
-  } else {
-    return Promise.reject(new Error(response.statusText))
-  }
-}
-
 chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
   const url = document.location.href
   const page = new Page({ serverUrl: data.serverUrl })
