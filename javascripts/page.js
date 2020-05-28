@@ -175,19 +175,28 @@ class Highlighter {
   }
 
   render(texts) {
+    const htmlEntities = (str) => {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+    }
     this.reset()
-    const textSelectors = 'p, li, h1, h2, h3, h4, h5, h6'
+    const textSelectors = 'p, a, li, h1, h2, h3, h4, h5, h6'
     document.querySelectorAll(textSelectors).forEach(el => {
+      if (el.childElementCount === 1 && el.children[0] instanceof HTMLImageElement) return
       let innerHTML = el.innerHTML
       texts.forEach(text => {
-        let index = innerHTML.indexOf(text)
+        const entityText = htmlEntities(text)
+        let index = innerHTML.indexOf(entityText)
         if (index >= 0) {
           innerHTML =
             innerHTML.substring(0, index) +
             "<span class='brain-cache-highlighted'>" +
-            innerHTML.substring(index, index + text.length) +
+            innerHTML.substring(index, index + entityText.length) +
             '</span>' +
-            innerHTML.substring(index + text.length)
+            innerHTML.substring(index + entityText.length)
         }
       })
       el.innerHTML = innerHTML
