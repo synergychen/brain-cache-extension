@@ -114,6 +114,14 @@ class Highlighter {
 
   get textSelected() { return document.getSelection().toString() }
 
+  get isInput() {
+    const selectedNode = document.getSelection().anchorNode
+    const selfIsInput = selectedNode instanceof HTMLInputElement
+    const wrapperIsInput = selectedNode.childElementCount > 0 &&
+      Array.from(selectedNode.children).find(node => node instanceof HTMLInputElement)
+    return selfIsInput || wrapperIsInput
+  }
+
   get selectionHighlighted() {
     const selection = document.getSelection().getRangeAt(0)
     const parentEl = selection.startContainer.parentElement
@@ -242,7 +250,7 @@ chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
 
   // Highlight
   document.addEventListener('keypress', (e) => {
-    if (e.key === 'h' && !!page.highlighter.textSelected) {
+    if (e.key === 'h' && !!page.highlighter.textSelected && !page.highlighter.isInput) {
       page.highlighter.update()
       page.highlighter.render(page.highlights)
     }

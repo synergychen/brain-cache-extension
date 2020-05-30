@@ -22,6 +22,7 @@ class Search {
   appendResults() {
     // Results container
     const resultsContainer = document.querySelector('.mw #rcnt #rhs')
+    if (!resultsContainer) return
     const container = document.createElement('div')
     container.setAttribute('id', 'search-results-container')
     resultsContainer.prepend(container)
