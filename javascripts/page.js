@@ -182,21 +182,48 @@ class Highlighter {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
     }
+    // Find subsequence str1 in str2
+    const found = (str1, str2) => {
+      // i for str1
+      let i = 0
+      // j for str2
+      let j = 0
+      let indexes = []
+      let range = []
+      while (i < str1.length && j < str2.length) {
+        if (str1[i] === str2[j]) {
+          indexes.push(j)
+          i += 1
+          j += 1
+        } else {
+          j += 1
+        }
+      }
+      if (indexes.length > 0) {
+        range = [indexes[0], indexes[indexes.length - 1]]
+      }
+      return {
+        found: i === str1.length,
+        range: range,
+      }
+    }
     this.reset()
     const textSelectors = 'p, a, li, h1, h2, h3, h4, h5, h6'
     document.querySelectorAll(textSelectors).forEach(el => {
+      // Skip image
       if (el.childElementCount === 1 && el.children[0] instanceof HTMLImageElement) return
       let innerHTML = el.innerHTML
       texts.forEach(text => {
         const entityText = htmlEntities(text)
-        let index = innerHTML.indexOf(entityText)
-        if (index >= 0) {
+        // Find subsequent string entityText in innerHTML
+        let result = found(entityText, innerHTML)
+        if (result.found) {
           innerHTML =
-            innerHTML.substring(0, index) +
+            innerHTML.substring(0, result.range[0] - 1) +
             "<span class='brain-cache-highlighted'>" +
-            innerHTML.substring(index, index + entityText.length) +
+            innerHTML.substring(result.range[0], result.range[1] + 1) +
             '</span>' +
-            innerHTML.substring(index + entityText.length)
+            innerHTML.substring(result.range[1] + 1)
         }
       })
       el.innerHTML = innerHTML
