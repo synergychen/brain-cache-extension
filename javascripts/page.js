@@ -190,29 +190,17 @@ class Highlighter {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
     }
-    // Find subsequence str1 in str2
-    const found = (str1, str2) => {
-      // i for str1
-      let i = 0
-      // j for str2
-      let j = 0
-      let indexes = []
-      let range = []
-      while (i < str1.length && j < str2.length) {
-        if (str1[i] === str2[j]) {
-          indexes.push(j)
-          i += 1
-          j += 1
-        } else {
-          j += 1
-        }
-      }
-      if (indexes.length > 0) {
-        range = [indexes[0], indexes[indexes.length - 1]]
-      }
+    // Find str1 in str2
+    function found(str1, str2) {
+      const chars = str1.split('')
+      const regStr = chars
+        .map((char) => `(<[^>]*>)*${char}[\\s]*(<[^>]*>)*[\\s]*`)
+        .join('')
+      const regex = new RegExp(regStr)
+      const matches = regex.exec(str2)
       return {
-        found: i === str1.length,
-        range: range,
+        found: !!matches,
+        range: matches ? [matches.index, matches.index + matches[0].length - 1] : []
       }
     }
     this.reset()
@@ -227,7 +215,7 @@ class Highlighter {
         let result = found(entityText, innerHTML)
         if (result.found) {
           innerHTML =
-            innerHTML.substring(0, result.range[0] - 1) +
+            innerHTML.substring(0, result.range[0]) +
             "<span class='brain-cache-highlighted'>" +
             innerHTML.substring(result.range[0], result.range[1] + 1) +
             '</span>' +
