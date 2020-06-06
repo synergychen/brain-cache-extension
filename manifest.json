@@ -18,6 +18,9 @@
         "https://*/*",
         "http://*/*"
       ],
+      "exclude_matches": [
+        "http://localhost:*/*"
+      ],
       "js": [
         "javascripts/storage.js",
         "javascripts/page.js"
