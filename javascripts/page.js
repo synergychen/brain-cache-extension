@@ -227,9 +227,9 @@ class Highlighter {
   }
 }
 
-chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
+async function fetchAndRender (serverUrl) {
   const url = document.location.href
-  const page = new Page({ serverUrl: data.serverUrl })
+  const page = new Page({ serverUrl })
 
   // Find page
   const pageData = await page.findBy({ url })
@@ -237,10 +237,21 @@ chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
   page.render()
 
   // Highlight
+  document.removeEventListener('keypress', () => {})
   document.addEventListener('keypress', (e) => {
     if (e.key === 'h' && !!page.highlighter.textSelected && !page.highlighter.isInput) {
       page.highlighter.update()
       page.highlighter.render(page.highlights)
     }
   })
+}
+
+chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.message === 'TabUpdated') {
+      fetchAndRender(data.serverUrl)
+    }
+  })
+
+  fetchAndRender(data.serverUrl)
 })
