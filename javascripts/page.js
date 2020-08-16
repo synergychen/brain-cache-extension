@@ -249,6 +249,7 @@ async function fetchAndRender (serverUrl) {
 chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === 'TabUpdated') {
+      // Update page status: star, highlights
       fetchAndRender(data.serverUrl)
     }
   })

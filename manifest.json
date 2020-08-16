@@ -5,7 +5,8 @@
   "permissions": [
     "cookies",
     "declarativeContent",
-    "storage"
+    "storage",
+    "history"
   ],
   "options_page": "options.html",
   "background": {

@@ -11,8 +11,25 @@
     </style>
   </head>
   <body>
-    <input id="server-url" type="text">
-    <button id="save">Save</button>
+    <div>
+      <label>Server URL:</label>
+      <input id="server-url" type="text">
+    </div>
+    <div>
+      <label>Last Updated:</label>
+      <span id="last-updated"></span>
+    </div>
+    <div>
+      <button id="save-button">Save</button>
+    </div>
   </body>
   <script src="options.js"></script>
+  <style>
+    #server-url {
+      width: 400px;
+    }
+    #save-button {
+      width: 50px;
+    }
+  </style>
 </html>
