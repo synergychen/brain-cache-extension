@@ -22,9 +22,11 @@ chrome.runtime.onInstalled.addListener(function() {
         const endTime = Date.now()
         const maxResults = 10000
         chrome.history.search({ text, startTime, endTime, maxResults }, function (data) {
-          data.forEach(function (page) {
-            // alert(JSON.stringify(page))
-          })
+          // {"id":"83586","lastVisitTime":1597610228420.501,"title":"S3 Management Console","typedCount":2,"url":"https://s3.console.aws.amazon.com/s3/home?region=us-east-1","visitCount":32}
+          // alert(JSON.stringify(data[0]))
+          // data.forEach(function (page) {
+          //   alert(JSON.stringify(page))
+          // })
         })
       })
     }

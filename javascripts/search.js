@@ -1,6 +1,7 @@
 class Search {
-  constructor({ serverUrl }) {
+  constructor({ serverUrl, authToken }) {
     this._serverUrl = serverUrl
+    this._authToken = authToken
     this._results = []
   }
 
@@ -14,6 +15,9 @@ class Search {
     const response = await fetch(searchUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
     })
     const page = await response.json()
     return page
@@ -44,12 +48,13 @@ class Search {
   }
 }
 
-chrome.storage.sync.get('serverUrl', async (data) => {
+chrome.storage.sync.get(['serverUrl', 'authToken'], async (data) => {
   const serverUrl = data.serverUrl || ''
+  const authToken = data.authToken || ''
   const queryInput = document.querySelector('form[action="/search"] input[type="text"]')
   const query = queryInput.value.split(/[+ ]/).filter(e => !!e).join('&')
   const limit = 30
-  const search = new Search({ serverUrl })
+  const search = new Search({ serverUrl, authToken })
   const response = await search.run({ query, limit })
   const results = response[0]
   if (results.length === 0) return

@@ -1,9 +1,10 @@
 class Page {
-  constructor({ serverUrl }) {
+  constructor({ serverUrl, authToken }) {
     this._serverUrl = serverUrl
+    this._authToken = authToken
     this._data = null
     this._highlights = []
-    this._highlighter = new Highlighter({ serverUrl, page: this })
+    this._highlighter = new Highlighter({ serverUrl, authToken, page: this })
   }
 
   get id() { return this._data && this._data.id }
@@ -39,6 +40,9 @@ class Page {
     const response = await fetch(searchUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
     })
     const page = await response.json()
     this.update(page)
@@ -60,6 +64,9 @@ class Page {
     const response = await fetch(starUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
     })
     const page = await response.json()
     this.update(page)
@@ -68,7 +75,12 @@ class Page {
 
   async unstar() {
     const unstarUrl = `${this._serverUrl}/pages/${this.id}/unstar`
-    const response = await fetch(unstarUrl, { method: 'DELETE' })
+    const response = await fetch(unstarUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
+    })
     await response.json()
     Storage.remove({ id: this.id })
     this.data = null
@@ -107,8 +119,9 @@ class Page {
 }
 
 class Highlighter {
-  constructor({ serverUrl, page }) {
+  constructor({ serverUrl, authToken, page }) {
     this._serverUrl = serverUrl
+    this._authToken = authToken
     this._page = page
   }
 
@@ -136,6 +149,9 @@ class Highlighter {
     const response = await fetch(highlightUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
     })
     const page = await response.json()
     this.page.update(page)
@@ -149,6 +165,9 @@ class Highlighter {
     const response = await fetch(unhighlightUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: {
+        'Authorization': 'Basic ' + this._authToken
+      }
     })
     const page = await response.json()
     this.page.update(page)
@@ -227,9 +246,9 @@ class Highlighter {
   }
 }
 
-async function fetchAndRender (serverUrl) {
+async function fetchAndRender (serverUrl, authToken) {
   const url = document.location.href
-  const page = new Page({ serverUrl })
+  const page = new Page({ serverUrl, authToken })
 
   // Find page
   const pageData = await page.findBy({ url })
@@ -246,13 +265,13 @@ async function fetchAndRender (serverUrl) {
   })
 }
 
-chrome.storage.sync.get(['serverUrl', 'pages'], async (data) => {
+chrome.storage.sync.get(['serverUrl', 'authToken', 'pages'], async (data) => {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === 'TabUpdated') {
       // Update page status: star, highlights
-      fetchAndRender(data.serverUrl)
+      fetchAndRender(data.serverUrl, data.authToken)
     }
   })
 
-  fetchAndRender(data.serverUrl)
+  fetchAndRender(data.serverUrl, data.authToken)
 })
